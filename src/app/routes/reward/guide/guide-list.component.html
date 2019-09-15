@@ -1,0 +1,12 @@
+<page-header [title]="'导购奖励'"></page-header>
+<nz-card [nzBordered]="false">
+  <app-filter-form [filters]="filters" (click)="reset()"></app-filter-form>
+  <div class="my-md"></div>
+  <st #st [columns]="columns" [data]="data" [page]="{ front: false }" [total]='total' [loading]="loading"
+    (change)="stChange($event)">
+    <ng-template st-row="rewardType" let-i>
+      <span *ngIf="!i.teamerId">个人奖励</span>
+      <span *ngIf="i.teamerId">团队奖励</span>
+    </ng-template>
+  </st>
+</nz-card>

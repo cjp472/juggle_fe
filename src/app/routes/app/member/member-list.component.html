@@ -1,0 +1,21 @@
+<page-header [title]="'会员表格'"></page-header>
+<nz-card [nzBordered]="false">
+  <app-filter-form [filters]="filters" (search)="reset()"></app-filter-form>
+  <ng-container *ngIf="selectedRows.length > 0">
+    <button nz-button>批量删除</button>
+  </ng-container>
+  <div class="my-md">
+    <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+      <ng-template #message>
+        已选择
+        <strong class="text-primary">{{ selectedRows.length }}</strong> 项
+      </ng-template>
+    </nz-alert>
+  </div>
+  <st #st [columns]="columns" [data]="data" [page]="{ front: false }" [total]='total' [loading]="loading"
+    (change)="stChange($event)">
+    <ng-template st-row="status" let-i>
+      <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+    </ng-template>
+  </st>
+</nz-card>

@@ -1,0 +1,82 @@
+<page-header [title]="'社区发布'" [content]="content" [action]="action">
+  <ng-template #action>
+    <div class="action">
+      <button nz-button nzType="default" nzShape="circle" (click)="goBack()"><i nz-icon nzType="close"></i></button>
+    </div>
+  </ng-template>
+  <ng-template #content>
+    <div class="desc">社区发布记录，不同社区发布历史等详细信息</div>
+  </ng-template>
+</page-header>
+<nz-card [nzBordered]="false">
+  <form nz-form se-container="1" size="compact" gutter="32" [labelWidth]="null">
+    <se label="所属社区" line>
+      <tag-select>
+        <nz-tag *ngFor="let i of categories; let idx = index" nzMode="checkable" [nzChecked]="i.value"
+          (nzCheckedChange)="changeCategory($event, idx)">
+          {{ i.text }}
+        </nz-tag>
+      </tag-select>
+    </se>
+    <se label="其它选项">
+      <div class="ant-form ant-form-inline">
+        <nz-form-item>
+          <nz-form-label nzFor="rate">标题</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="请输入" name="title" [(ngModel)]="q.title" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="rate">内容</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="请输入" name="content" [(ngModel)]="q.content" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button type="submit" [nzType]="'primary'" (click)="getData()" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" class="mx-sm">重置</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </se>
+  </form>
+</nz-card>
+<nz-card [nzBordered]="false">
+  <nz-list nzItemLayout="vertical" [nzLoading]="loading" [nzDataSource]="list" [nzRenderItem]="item"
+    [nzLoadMore]="loadMore">
+    <ng-template #item let-item>
+      <nz-list-item [nzContent]="nzContent" [nzExtra]="nzExtra" [nzActions]="[op1]">
+        <ng-template #op1> <i nz-icon nzType="share-alt" class="mr-sm"></i>{{ item.shareCount }}</ng-template>
+        <ng-template #nzExtra>
+          <div style="width: 272px; height: 1px;"></div>
+        </ng-template>
+        <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzDescription">
+          <ng-template #nzTitle>
+            <a href="{{ item.href }}" target="_blank">{{ item.title }}</a>
+          </ng-template>
+          <ng-template #nzDescription>
+            <nz-tag>{{item.community.name}}</nz-tag>
+          </ng-template>
+        </nz-list-item-meta>
+        <ng-template #nzContent>
+          <p>{{ item.content }}</p>
+          <div class="mt-md d-flex">
+            <nz-avatar [nzSrc]="item.creater.avatar" [nzSize]="'small'" class="mr-sm"></nz-avatar>
+            <a href="{{ item.href }}" target="_blank">{{ item.creater.loginName }}</a>
+            <span class="px-sm">发布在</span>
+            <a href="{{ item.href }}" target="_blank">{{ item.href }}</a>
+            <time class="pl-md text-grey" title="{{ item.createdTime }}">{{ item.createdTime | _date }}</time>
+          </div>
+        </ng-template>
+      </nz-list-item>
+    </ng-template>
+    <ng-template #loadMore>
+      <div class="text-center mt-md" *ngIf="list.length>0">
+        <button nz-button (click)="getData(true)" [nzLoading]="loading" [nzType]="'dashed'" style="min-width:200px;">
+          加载更多
+        </button>
+      </div>
+    </ng-template>
+  </nz-list>
+</nz-card>

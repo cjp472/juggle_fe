@@ -1,0 +1,354 @@
+{
+  "app": {
+    "name": "Juggle Management System",
+    "description": "Ng-zorro admin panel front-end framework"
+  },
+  "user": {
+    "name": "Juggle",
+    "avatar": "./assets/tmp/img/avatar.jpg",
+    "email": "1124485179@qq.com"
+  },
+  "menu": [
+    {
+      "text": "Main",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "仪表盘",
+          "i18n": "menu.dashboard",
+          "icon": "anticon-dashboard",
+          "children": [
+            {
+              "text": "仪表盘V1",
+              "link": "/dashboard/v1",
+              "i18n": "menu.dashboard.v1"
+            },
+            {
+              "text": "分析页",
+              "link": "/dashboard/analysis",
+              "i18n": "menu.dashboard.analysis"
+            },
+            {
+              "text": "监控页",
+              "link": "/dashboard/monitor",
+              "i18n": "menu.dashboard.monitor"
+            },
+            {
+              "text": "工作台",
+              "link": "/dashboard/workplace",
+              "i18n": "menu.dashboard.workplace"
+            }
+          ]
+        },
+        {
+          "text": "快捷菜单",
+          "i18n": "menu.shortcut",
+          "icon": "anticon-rocket",
+          "shortcutRoot": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "Application",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children":[
+      {
+        "text": "会员管理",
+        "icon": "anticon-team",
+        "link": "/app",
+        "children": [
+          {
+            "text":"查看会员",
+            "link":"/app/member"
+          },
+          {
+            "text":"实名审批",
+            "link":"/app/cert"
+          }
+        ]
+      },{
+        "text": "淘宝联盟",
+        "icon": "anticon-taobao",
+        "link": "/taobao",
+        "children": [
+          {
+            "text":"精选分类",
+            "children":[
+              {
+                "text":"商品分类",
+                "link":"/taobao/type"
+              },
+              {
+                "text":"分类商品",
+                "link":"/taobao/goods"
+              }
+            ]
+          },
+          {
+            "text":"品牌好货",
+            "children":[
+              {
+                "text":"品牌分类",
+                "link":"/taobao/category"
+              },
+              {
+                "text":"精选品牌",
+                "link":"/taobao/brand"
+              },
+              {
+                "text":"品牌商品",
+                "link":"/taobao/product/list"
+              }
+            ]
+          },
+          {
+            "text":"淘宝选品",
+            "link":"/taobao/selection/list"
+          },
+          {
+            "text":"推荐商品",
+            "link":"/taobao/favourable/list"
+          },
+          {
+            "text":"限时抢购",
+            "link":"/taobao/flash/list"
+          },
+          {
+            "text":"热门商品",
+            "link":"/taobao/popular/list"
+          }
+        ]
+      },
+      {
+        "text":"自营商城",
+        "icon":"anticon-laptop",
+        "link":"/shop",
+        "children":[
+          {
+            "text":"商品配置",
+            "children":[
+              {
+                "text":"商品分类",
+                "link":"/shop/type"
+              },
+              {
+                "text":"商品规格",
+                "link":"/shop/skutype"
+              },
+              {
+                "text":"商品标签",
+                "link":"/shop/tag"
+              }
+            ]
+          },
+          {
+            "text":"自营商品",
+            "link":"/shop/product"
+          },
+          {
+            "text":"商品订单",
+            "link":"/shop/order"
+          },
+          {
+            "text":"领券中心",
+            "link":"/shop/coupon"
+          }
+        ]
+      },
+      {
+        "text":"充值缴费",
+        "icon":"anticon-cloud",
+        "link":"/recharge",
+        "children":[
+          {
+            "text":"话费规格",
+            "link":"/recharge/phonesku"
+          },
+          {
+            "text":"话费充值",
+            "link":"/recharge/phonebill"
+          }
+        ]
+      },
+      {
+        "text": "广告管理",
+        "icon": "anticon-bulb",
+        "link": "/advert",
+        "children": [
+          {
+            "text":"广告类型",
+            "link":"/advert/type"
+          },
+          {
+            "text":"查看广告",
+            "link":"/advert/advert"
+          }
+        ]
+      },{
+        "text": "社区管理",
+        "icon": "anticon-message",
+        "link": "/community",
+        "children": [
+          {
+            "text":"查看社区",
+            "link":"/community/community"
+          },
+          {
+            "text":"社区发布",
+            "link":"/community/publish"
+          }
+        ]
+      },
+      {
+        "text":"内容管理",
+        "icon":"anticon-profile",
+        "link":"/cms",
+        "children":[
+          {
+            "text":"文案管理",
+            "link":"/cms/article"
+          },
+          {
+            "text":"资源管理",
+            "link":"/cms/resource"
+          }
+        ]
+      },
+      {
+        "text":"提现管理",
+        "icon":"anticon-trophy",
+        "link":"/withdraw",
+        "children":[
+          {
+            "text":"提现审批",
+            "link":"/withdraw/approval"
+          },
+          {
+            "text":"提现历史",
+            "link":"/withdraw/history"
+          }
+        ]
+      },{
+        "text":"运营管理",
+        "icon":"anticon-fork",
+        "link":"/business",
+        "children":[
+          {
+            "text":"短信群发",
+            "link":"/business/groupmsg"
+          },
+          {
+            "text":"消息推送",
+            "link":"/business/push"
+          },
+          {
+            "text":"热门搜索",
+            "link":"/business/hotsearch"
+          }
+        ]
+      },{
+        "text":"奖励记录",
+        "icon":"anticon-eye",
+        "link":"/reward",
+        "children":[
+          {
+            "text":"推广奖励",
+            "link":"/reward/spread"
+          },
+          {
+            "text":"导购奖励",
+            "link":"/reward/guide"
+          },
+          {
+            "text":"销售奖励",
+            "link":"/reward/sale"
+          }
+        ]
+      }]
+    },
+    {
+      "text": "Platform",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text":"任务管理",
+          "icon":"anticon-clock-circle",
+          "link":"/task",
+          "children":[
+            {
+              "text":"定时任务",
+              "link":"/task/schedule",
+              "shortcut": true
+            },
+            {
+              "text":"间歇任务",
+              "link":"/task/interval",
+              "shortcut":true
+            }
+          ]
+        },
+        {
+          "text": "组织机构",
+          "icon": "anticon-user",
+          "link": "/system",
+          "children": [
+            {
+              "text": "用户管理",
+              "link": "/system/user"
+            },
+            {
+              "text": "组织管理",
+              "link": "/system/unit"
+            },
+            {
+              "text": "角色管理",
+              "link": "/system/role"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "More",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children":[
+        {
+          "text":"日志信息",
+          "icon":"anticon-api",
+          "link":"/log",
+          "children":[
+            {
+              "text":"操作日志",
+              "link":"/log/operate",
+              "shortcut": true
+            },
+            {
+              "text":"任务日志",
+              "link":"/log/schedule"
+            }
+          ]
+        },
+        {
+          "text":"系统设置",
+          "icon":"anticon-setting",
+          "link":"/setting",
+          "children":[
+            {
+              "text":"区域管理",
+              "link":"/setting/domain"
+            },
+            {
+              "text":"配置管理",
+              "link":"/setting/dictionary"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+<page-header [title]="null"></page-header>
+<nz-card [nzBordered]="false">
+  <div nz-row>
+    <div nz-col [nzXs]="24" [nzSm]="8" class="header-info">
+      <span class="text-grey-dark">品牌分类</span>
+      <span class="d-block display-2">{{summary.taobaoTypeNum}}个分类</span>
+      <em></em>
+    </div>
+    <div nz-col [nzXs]="24" [nzSm]="8" class="header-info">
+      <span class="text-grey-dark">品牌总数</span>
+      <span class="d-block display-2">{{summary.taobaoBrandNum}}个品牌</span>
+      <em></em>
+    </div>
+    <div nz-col [nzXs]="24" [nzSm]="8" class="header-info">
+      <span class="text-grey-dark">商品总数</span>
+      <span class="d-block display-2">{{summary.taobaoProductNum}}个商品</span>
+    </div>
+  </div>
+</nz-card>
+<nz-card [nzBordered]="false">
+  <div class="d-flex align-items-center mb-lg">
+    <h3 class="flex-1 text-lg">品牌列表</h3>
+    <div>
+      <nz-radio-group [(ngModel)]="q.status" (ngModelChange)="getData()" class="mr-md">
+        <label nz-radio-button [nzValue]="'all'">
+          <span>全部</span>
+        </label>
+        <label nz-radio-button [nzValue]="'normal'">
+          <span>启用中</span>
+        </label>
+        <label nz-radio-button [nzValue]="'forbid'">
+          <span>已禁用</span>
+        </label>
+      </nz-radio-group>
+      <nz-select style="width: 270px;" [(ngModel)]="q.categoryId" (ngModelChange)="getData()" nzAllowClear
+        nzPlaceHolder="请选择品牌分类">
+        <nz-option *ngFor="let i of taobaoTypeOpts" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <button nz-button (click)="openEdit()" [nzType]="'dashed'" nzBlock class="mb-sm">
+    <i nz-icon nzType="plus"></i>
+    <span>添加</span>
+  </button>
+  <nz-list [nzDataSource]="data" [nzLoading]="loading" [nzRenderItem]="item" [nzPagination]="pagination">
+    <ng-template #item let-item let-index="index">
+      <nz-list-item [nzContent]="nzContent" [nzActions]="[edit, op]">
+        <ng-template #edit>
+          <a (click)="openEdit(item)">编辑</a>
+        </ng-template>
+        <ng-template #op>
+          <a class="ant-dropdown-link" nz-dropdown [nzDropdownMenu]="opMenu">
+            更多
+            <i nz-icon nzType="down"></i>
+          </a>
+          <nz-dropdown-menu #opMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="sync(item)"><i nz-icon nzType="api" nzTheme="outline"></i>同步</li>
+              <li nz-menu-item (click)="changeEnabled(item)"><i nz-icon nzType="tool"
+                  nzTheme="outline"></i>{{ item.enabled ? '禁用' : '启用' }}</li>
+              <li nz-menu-item (click)="remove(item)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</li>
+            </ul>
+          </nz-dropdown-menu>
+        </ng-template>
+        <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="item.detail" [nzAvatar]="nzAvatar">
+          <ng-template #nzTitle>
+            <section style="margin-bottom: 12.5px;"></section>
+            <a href="{{ item.storeUrl }}" target="_blank">{{ item.name + '（' + item.storeName + '）' }}</a>
+          </ng-template>
+          <ng-template #nzAvatar>
+            <nz-avatar [nzSrc]="item.thumbnail" (click)="open(index)" nzSize="large" [nzShape]="'square'"
+              class="thumbnail">
+            </nz-avatar>
+          </ng-template>
+        </nz-list-item-meta>
+        <ng-template #nzContent>
+          <div class="width-md">
+            <div class="d-flex text-grey-dark">
+              <div class="flex-1">
+                商品数
+                <p>{{ item.extra.productNum }} 个</p>
+              </div>
+              <div class="text-right">
+                分类
+                <p>{{ item.category.name }}</p>
+              </div>
+            </div>
+            <nz-badge *ngIf="item.enabled" nzStatus="processing" nzText="品牌启用中"></nz-badge>
+            <nz-badge *ngIf="!item.enabled" nzStatus="error" nzText="品牌禁用中"></nz-badge>
+          </div>
+        </ng-template>
+      </nz-list-item>
+    </ng-template>
+    <ng-template #pagination>
+      <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageNo" [nzPageSize]="10" (nzPageIndexChange)="stChange()">
+      </nz-pagination>
+    </ng-template>
+  </nz-list>
+</nz-card>

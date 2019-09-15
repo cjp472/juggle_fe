@@ -1,0 +1,56 @@
+<page-header [title]="'实名审批'" [content]="content" [action]="action">
+  <ng-template #action>
+    <div class="action">
+      <nz-button-group *ngIf="data.processStatus=='OPEN'" style="margin-right:25px;">
+        <button nz-button nzType="primary" (click)="pass()"><i nz-icon nzType="check"></i>通过</button>
+        <button nz-button nzType="dashed" (click)="reject()"><i nz-icon nzType="close"></i>拒绝</button>
+      </nz-button-group>
+      <button nz-button nzType="default" nzShape="circle" (click)="goBack()"><i nz-icon nzType="close"></i></button>
+    </div>
+  </ng-template>
+  <ng-template #content>
+    <div class="desc">会员实名认证信息，认证审批等详细信息</div>
+  </ng-template>
+</page-header>
+<nz-card [nzHoverable]="true" [nzBordered]="false">
+  <sv-container size="large" title="审批信息">
+    <sv label="申请时间">{{data.createdTime|date:'yyyy-MM-dd HH:mm'}}</sv>
+    <sv label="审批状态">
+      <nz-badge *ngIf="data.processStatus=='OPEN'" nzStatus="processing" nzText="待审批"></nz-badge>
+      <nz-badge *ngIf="data.processStatus=='PASS'" nzStatus="success" nzText="已通过"></nz-badge>
+      <nz-badge *ngIf="data.processStatus=='REJECT'" nzStatus="error" nzText="已拒绝"></nz-badge>
+    </sv>
+    <sv *ngIf="data.processStatus!='OPEN'" label="审批时间">{{data.approvalTime|date:'yyyy-MM-dd HH:mm'}}</sv>
+    <sv *ngIf="data.processStatus!='OPEN'" label="审批人">{{data.approver.loginName}}</sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+  <sv-container size="large" title="用户信息">
+    <sv label="会员编码">{{data.member.code}}</sv>
+    <sv label="会员昵称">{{data.member.nickName}}</sv>
+    <sv label="会员等级">
+      <nz-tag *ngIf="data.member.grade==='GRADE1'" [nzColor]="'blue'">普通会员</nz-tag>
+      <nz-tag *ngIf="data.member.grade==='GRADE2'" [nzColor]="'orange'">黄金会员</nz-tag>
+    </sv>
+    <sv label="联系电话">{{data.member.mobile}}</sv>
+    <sv label="会员状态">
+      <nz-badge *ngIf="data.member.status=='NORMAL'" nzStatus="processing" nzText="正常"></nz-badge>
+      <nz-badge *ngIf="data.member.status=='FORBID'" nzStatus="error" nzText="禁用"></nz-badge>
+    </sv>
+    <sv label="注册时间">{{data.createdTime | date: 'yyyy-MM-dd HH:mm' }}</sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+  <sv-container size="large" title="认证信息">
+    <sv label="真实姓名">{{data.extra.realName}}</sv>
+    <sv label="身份证号">{{data.extra.idCard}}</sv>
+    <sv label="手机号码">{{data.extra.mobile}}</sv>
+  </sv-container>
+  <sv-container size="large" col="2" layout="vertical" style="margin-top:25px;">
+    <sv label="身份证正面">
+      <img [src]="data.extra.idCardFront" (click)="open(0)" style="border-radius: 5px;height:225px;" />
+    </sv>
+    <sv label="身份证反面">
+      <img [src]="data.extra.idCardBack" (click)="open(1)" style="border-radius: 5px;height:225px;" />
+    </sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+</nz-card>

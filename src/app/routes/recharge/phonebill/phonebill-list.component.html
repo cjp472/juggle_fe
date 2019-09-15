@@ -1,0 +1,12 @@
+<page-header [title]="'话费充值'"></page-header>
+<nz-card [nzBordered]="false">
+  <app-filter-form [filters]="filters" (search)="reset()"></app-filter-form>
+  <div class="my-md">
+  </div>
+  <st #st [columns]="columns" [data]="data" [page]="{ front: false }" [total]='total' [loading]="loading"
+    (change)="stChange($event)">
+    <ng-template st-row="status" let-i>
+      <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+    </ng-template>
+  </st>
+</nz-card>

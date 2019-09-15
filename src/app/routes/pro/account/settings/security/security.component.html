@@ -1,0 +1,33 @@
+<nz-row [nzGutter]="64">
+  <nz-col [nzSpan]="16">
+    <form nz-form [nzLayout]="'vertical'">
+      <nz-form-item>
+        <nz-form-label nzFor="old_password" nzRequired>旧密码</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="pwd.old_password" name="old_password" id="old_password" type="password"
+            required />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="new_password" nzRequired>新密码</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="pwd.new_password" name="new_password" id="new_password" type="password"
+            required />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="confirm_new_password">确认密码</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="pwd.confirm_new_password" name="confirm_new_password" id="confirm_new_password"
+            type="password" required />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button (click)="pwdSave()" [nzType]="'primary'">更新密码</button>
+          <a class="pl-sm" (click)='forgotPwd()'>I forgot my password</a>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-col>
+</nz-row>

@@ -1,0 +1,144 @@
+<page-header [title]="'单号：'+record.code" [logo]="logo" [action]="action" [extra]="extra" [tab]="tab">
+  <ng-template #logo>
+    <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
+  </ng-template>
+  <ng-template #action>
+    <div class="action">
+      <button nz-button nzType="default" nzShape="circle" (click)="goBack()"><i nz-icon nzType="close"></i></button>
+    </div>
+  </ng-template>
+  <ng-template #extra>
+    <div nz-row>
+      <div nz-col nzXs="24" nzSm="12">
+        <p class="text-grey">状态</p>
+        <p class="text-lg">
+          <span [ngSwitch]="record.status">
+            <span *ngSwitchCase="'OPEN'">待付款</span>
+            <span *ngSwitchCase="'PAID'">待发货</span>
+            <span *ngSwitchCase="'SHIPPED'">待收货</span>
+            <span *ngSwitchCase="'RECEIVED'">待评价</span>
+            <span *ngSwitchCase="'COMPLETE'">已完成</span>
+            <span *ngSwitchCase="'CANCEL'">已取消</span>
+          </span>
+        </p>
+      </div>
+      <div nz-col nzXs="24" nzSm="12">
+        <p class="text-grey">订单金额</p>
+        <p class="text-lg">¥ {{record.amount|number:'1.2-2'}}</p>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #tab>
+    <nz-tabset (nzSelectChange)="selectChange($event)">
+      <nz-tab nzTitle="详情"></nz-tab>
+      <nz-tab nzTitle="物流"></nz-tab>
+    </nz-tabset>
+  </ng-template>
+  <sv-container size="small" col="2">
+    <sv label="会员昵称">{{record.member.nickName}}</sv>
+    <sv label="订购产品">{{record.snapshot.product.name}}</sv>
+    <sv label="手机号码">{{record.member.mobile}}</sv>
+    <sv label="创建时间">{{record.createdTime|_date}}</sv>
+    <sv label="完成时间">{{record.completeTime|_date}}</sv>
+    <sv label="备注">{{record.remark}}</sv>
+  </sv-container>
+</page-header>
+<section [hidden]="selectTab!==0">
+  <nz-card [nzBordered]="false" class="mb-lg" nzTitle="流程进度">
+    <nz-steps [nzCurrent]="statusNum" nzProgressDot>
+      <nz-step [nzTitle]="'待付款'" [nzDescription]="createDesc">
+        <ng-template #createDesc>
+          <div class="desc">
+            <div class="my-sm">
+              {{record.member.nickName}}
+              <i nz-icon nzType="user" class="ml-sm"></i>
+            </div>
+            <div>{{record.createdTime|_date}}</div>
+          </div>
+        </ng-template>
+      </nz-step>
+      <nz-step [nzTitle]="'待发货'" [nzDescription]="checkedDesc">
+        <ng-template #checkedDesc>
+          <div class="desc">
+            <div class="my-sm">
+              {{record.member.nickName}}
+              <i nz-icon nzType="user" class="ml-sm" style="color: #00a0e9;"></i>
+            </div>
+            <a *ngIf="record.status=='PAID'" (click)="ship(record)">发货</a>
+          </div>
+        </ng-template>
+      </nz-step>
+      <nz-step [nzTitle]="'待收货'"></nz-step>
+      <nz-step [nzTitle]="'待评价'"></nz-step>
+      <nz-step [nzTitle]="'已完成'"></nz-step>
+    </nz-steps>
+    <div class="steps-content"></div>
+  </nz-card>
+  <nz-card [nzBordered]="false" nzTitle="订单信息" class="mb-lg">
+    <sv-container class="mb-lg" title="会员信息">
+      <sv label="会员编码">{{record.member.code}}</sv>
+      <sv label="会员昵称">{{record.member.nickName}}</sv>
+      <sv label="手机号码">{{record.member.mobile}}</sv>
+      <sv label="会员等级">
+        <span *ngIf="record.member && record.member.grade==='GRADE1'">普通会员</span>
+        <span *ngIf="record.member && record.member.grade==='GRADE2'">黄金会员</span>
+      </sv>
+      <sv label="真实姓名">{{record.cert&&record.cert.realName}}</sv>
+      <sv label="身份证号">{{record.cert&&record.cert.idCard}}</sv>
+      <sv label="注册时间">{{record.member.createdTime|_date}}</sv>
+      <sv label="会员状态">
+        <nz-badge *ngIf="record.member.status=='NORMAL'" nzStatus="processing" nzText="正常"></nz-badge>
+        <nz-badge *ngIf="record.member.status=='FORBID'" nzStatus="error" nzText="禁用"></nz-badge>
+      </sv>
+    </sv-container>
+    <sv-container class="mb-lg" col="2" title="收货信息">
+      <sv label="收货人">{{record.snapshot.address.name}}</sv>
+      <sv label="手机号">{{record.snapshot.address.mobile}}</sv>
+      <sv label="详细地址">
+        {{record.snapshot.address.province+record.snapshot.address.city+record.snapshot.address.region+record.snapshot.address.address}}
+      </sv>
+    </sv-container>
+    <h4 class="mb-md">商品信息</h4>
+    <nz-card nzType="inner" nzTitle="基础信息">
+      <sv-container size="small" title="商品属性">
+        <sv label="商品名称">{{record.snapshot.product.name}}</sv>
+        <sv label="商品原价">¥ {{record.snapshot.product.price|number:'1.2-2'}}</sv>
+        <sv label="优惠价格">¥ {{record.snapshot.product.actualPrice|number:'1.2-2'}}</sv>
+      </sv-container>
+      <nz-divider></nz-divider>
+      <sv-container size="small" title="SKU属性" col="1">
+        <sv label="规格">
+          <span *ngFor="let i of record.snapshot.skus; let idx = index">
+            {{i.name}}&nbsp;
+          </span>
+        </sv>
+      </sv-container>
+      <nz-divider></nz-divider>
+      <sv-container size="small" title="商品详情">
+        <sv>
+          <nz-avatar *ngFor="let detail of record.snapshot.product.details;let i=index" [nzShape]="'square'"
+            [nzSize]="80" [nzSrc]="detail" (click)="open(i)" style="margin-right: 25px;"></nz-avatar>
+        </sv>
+      </sv-container>
+    </nz-card>
+  </nz-card>
+  <nz-card [nzBordered]="false" nzTitle="会员最近购买记录" class="mb-lg">
+    <st #st *ngIf="data.length>0" [columns]="columns" [data]="data" [page]="{ show: false }">
+    </st>
+    <div *ngIf="data.length===0" class="no-data"><i nz-icon nzType="frown"></i>暂无数据</div>
+  </nz-card>
+</section>
+<section [hidden]="selectTab!==1">
+  <nz-card [nzBordered]="false" class="mb-lg" nzTitle="物流信息">
+    <nz-empty *ngIf="!express||express.status!=='0'" [nzNotFoundContent]="contentTpl"></nz-empty>
+    <ng-template #contentTpl>
+      <span>暂无物流信息</span>
+    </ng-template>
+    <nz-timeline *ngIf="express && express.status==='0'">
+      <nz-timeline-item *ngFor="let item of express.result.list;let i=index" [nzColor]="i==0?'red':'green'">
+        <p>{{item.status}}</p>
+        <p>{{item.time}}</p>
+      </nz-timeline-item>
+    </nz-timeline>
+  </nz-card>
+</section>

@@ -1,0 +1,74 @@
+<nz-card [nzBordered]="false">
+  <form nz-form se-container="1" size="compact" gutter="32" [labelWidth]="null">
+    <se *ngIf="_categoryId!==0" label="所属品牌" line>
+      <tag-select>
+        <nz-tag *ngFor="let i of brands; let idx = index" nzMode="checkable" [nzChecked]="i.value"
+          (nzCheckedChange)="changeBrand($event, idx)">
+          {{ i.text }}
+        </nz-tag>
+      </tag-select>
+    </se>
+    <se label="其它选项">
+      <div class="ant-form ant-form-inline">
+        <nz-form-item>
+          <nz-form-label nzFor="sort">排序</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="q.sort" name="sort" [nzPlaceHolder]="'不限'" [nzShowSearch]="true"
+              style="width: 150px;">
+              <nz-option [nzLabel]="'价格降序'" [nzValue]="'zkFinalPrice desc'"></nz-option>
+              <nz-option [nzLabel]="'价格升序'" [nzValue]="'zkFinalPrice asc'"></nz-option>
+              <nz-option [nzLabel]="'销量降序'" [nzValue]="'volume desc'"></nz-option>
+              <nz-option [nzLabel]="'销量升序'" [nzValue]="'volume asc'"></nz-option>
+              <nz-option [nzLabel]="'奖励降序'" [nzValue]="'primaryReward desc'"></nz-option>
+              <nz-option [nzLabel]="'奖励升序'" [nzValue]="'primaryReward asc'"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="coupon">有优惠券</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="q.coupon" name="coupon" [nzPlaceHolder]="'不限'" [nzShowSearch]="true"
+              style="width: 150px;">
+              <nz-option [nzLabel]="'是'" [nzValue]="true"></nz-option>
+              <nz-option [nzLabel]="'否'" [nzValue]="false"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button type="submit" [nzType]="'primary'" (click)="getData()" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" class="mx-sm">重置</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </se>
+  </form>
+</nz-card>
+<nz-list [nzLoading]="loading" [nzRenderItem]="item" [nzDataSource]="list"
+  [nzGrid]="{ gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }" [nzPagination]="pagination">
+  <ng-template #item let-item let-index="index">
+    <nz-list-item>
+      <nz-card nzHoverable [nzCover]=" cover" style="height:418.75px;">
+        <ng-template #cover>
+          <img alt="{{ item.title }}" src="{{ item.pictUrl }}" (click)="open(index)" style="height:276.5px;" />
+        </ng-template>
+        <nz-card-meta [nzTitle]="nzTitle" [nzDescription]="item.snapshot.title" style="font-size:11px !important;">
+          <ng-template #nzTitle>
+            <a [href]="item.snapshot.couponShareUrl||item.snapshot.url" target="_blank">{{ item.snapshot.title }}</a>
+          </ng-template>
+        </nz-card-meta>
+        <div class="card-item-content">
+          <span class="text-grey" style='font-size:11px !important;'> <i nz-icon nzType="taobao-circle"
+              nzTheme="outline" [ngClass]="{'text-orange':item.userType==0,'text-red':item.userType==1}"></i>
+            &nbsp;{{ item.snapshot.shopTitle }}</span>
+          <span class="text-volcano"
+            style='font-size:15px !important;'>{{ item.snapshot.zkFinalPrice | currency:'¥':true:'1.2-2'}}</span>
+        </div>
+      </nz-card>
+    </nz-list-item>
+  </ng-template>
+  <ng-template #pagination>
+    <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageNo" [nzPageSize]="16" (nzPageIndexChange)="stChange()">
+    </nz-pagination>
+  </ng-template>
+</nz-list>

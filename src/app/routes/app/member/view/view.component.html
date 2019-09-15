@@ -1,0 +1,57 @@
+<page-header [title]="'会员详情'" [content]="content" [action]="action">
+  <ng-template #action>
+    <div class="action">
+      <button nz-button nzType="default" nzShape="circle" (click)="goBack()"><i nz-icon nzType="close"></i></button>
+    </div>
+  </ng-template>
+  <ng-template #content>
+    <div class="desc">会员提现记录，收货地址等详细信息</div>
+  </ng-template>
+</page-header>
+<nz-card [nzHoverable]="true" [nzBordered]="false">
+  <sv-container size="large" title="会员信息">
+    <sv label="会员编码">{{data.code}}</sv>
+    <sv label="会员昵称">{{data.nickName}}</sv>
+    <sv label="会员等级">
+      <nz-tag *ngIf="data.grade=='GRADE1'" [nzColor]="'blue'">普通会员</nz-tag>
+      <nz-tag *ngIf="data.grade=='GRADE2'" [nzColor]="'orange'">黄金会员</nz-tag>
+    </sv>
+    <sv label="联系电话">{{data.mobile}}</sv>
+    <sv label="会员状态">
+      <nz-badge *ngIf="data.status=='NORMAL'" nzStatus="processing" nzText="正常"></nz-badge>
+      <nz-badge *ngIf="data.status=='FORBID'" nzStatus="error" nzText="禁用"></nz-badge>
+    </sv>
+    <sv label="是否实名">
+      <nz-tag *ngIf="data.certified" [nzColor]="'green'">已实名</nz-tag>
+      <nz-tag *ngIf="!data.certified" [nzColor]="'red'">未实名</nz-tag>
+    </sv>
+    <sv label="注册时间">{{data.createdTime | _date }}</sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+  <sv-container size="large" title="账号信息">
+    <sv label="支付宝姓名">{{data.extra.alipayName}}</sv>
+    <sv label="支付宝账号">{{data.extra.alipayAccount}}</sv>
+    <sv label="最后登录时间">{{data.extra.lastLoginTime|date:'yyyy-MM-dd HH:mm'}}</sv>
+    <sv label="最后登录IP">{{data.extra.lastLoginIp}}</sv>
+  </sv-container>
+  <nz-divider *ngIf="data.certified"></nz-divider>
+  <sv-container *ngIf="data.certified" size="large" col="2" title="实名信息">
+    <sv label="真实姓名">{{data.extra.realName}}</sv>
+    <sv label="身份证号">{{data.extra.idCard}}</sv>
+  </sv-container>
+  <sv-container *ngIf="data.certified" size="large" col="2" layout="vertical" style="margin-top:25px;">
+    <sv label="身份证正面">
+      <img [src]="data.extra.idCardFront" (click)="open(0)" style="border-radius: 5px;height:225px;" />
+    </sv>
+    <sv label="身份证反面">
+      <img [src]="data.extra.idCardBack" (click)="open(1)" style="border-radius: 5px;height:225px;" />
+    </sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+  <div class="text-lg mb-md">最近提现</div>
+  <st #st [data]="withdraw" [columns]="withdrawColumns" [page]="{ show: false }"></st>
+  <div class="text-lg mb-md" style="margin-top:25px;">银行账号</div>
+  <st [data]="bank" [columns]="bankColumns" [page]="{ show: false }"></st>
+  <div class="text-lg my-md" style="margin-top:25px;">收货地址</div>
+  <st [data]="address" [columns]="addressColumns" [page]="{ show: false }"></st>
+</nz-card>

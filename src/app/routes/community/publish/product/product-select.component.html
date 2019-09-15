@@ -1,0 +1,9 @@
+<div class="modal-header">
+  <div class="modal-title">选择产品</div>
+</div>
+<nz-card [nzBordered]="true">
+  <app-filter-form [filters]="filters" (search)="reset()"></app-filter-form>
+  <st #st [widthMode]="{ type: 'strict' }" [columns]="columns" [data]="data" [page]="{ front: false }" [total]='total' [loading]="loading"
+    (change)="stChange($event)">
+  </st>
+</nz-card>

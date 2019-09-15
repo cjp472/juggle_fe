@@ -1,0 +1,47 @@
+<page-header [title]="'商品分类'"></page-header>
+<nz-card [nzBordered]="false">
+  <app-filter-form [filters]="filters" (search)="reset()"></app-filter-form>
+  <button nz-button [nzType]="'primary'" (click)="openEdit()">
+    <i nz-icon nzType="plus"></i>
+    <span>新建</span>
+  </button>
+  <div class="my-md">
+  </div>
+  <nz-table #expandTable [nzData]="listOfMapData">
+    <thead>
+      <tr>
+        <th nzWidth="20%">名称</th>
+        <th nzWidth="45%">描述</th>
+        <th nzWidth="10%">排序</th>
+        <th nzWidth="10%">启用</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of expandTable.data">
+        <ng-container *ngFor="let item of mapOfExpandedData[data.id]">
+          <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+            <td [nzIndentSize]="item.level * 20" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(mapOfExpandedData[data.id], item, $event)">
+              {{ item.name }}
+            </td>
+            <td>{{item.detail}}</td>
+            <td>{{item.sort}}</td>
+            <td>
+              <i *ngIf="item.enabled" nz-icon nzType="check" nzTheme="outline" style="color:#1890ff;"></i>
+              <i *ngIf="!item.enabled" nz-icon nzType="close" nzTheme="outline"></i>
+            </td>
+            <td>
+              <a (click)='openEdit(item)'>编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a *ngIf='item.enabled' (click)='changeEnabled(item)'>禁用</a>
+              <a *ngIf='!item.enabled' (click)='changeEnabled(item)'>启用</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)='remove(item)'>删除</a>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</nz-card>

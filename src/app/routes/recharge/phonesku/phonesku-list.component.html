@@ -1,0 +1,9 @@
+<page-header [title]="'话费规格'"></page-header>
+<nz-card [nzBordered]="false">
+  <app-filter-form [filters]="filters" (search)="reset()"></app-filter-form>
+  <div class="my-md">
+  </div>
+  <st #st [columns]="columns" [data]="data" [page]="{ front: false }" [total]='total' [loading]="loading"
+    (change)="stChange($event)">
+  </st>
+</nz-card>

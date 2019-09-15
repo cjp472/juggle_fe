@@ -1,0 +1,18 @@
+<page-header [title]="'品牌商品'" [tab]="tab">
+  <div class="text-center">
+    <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="addOnAfterBtn" style="width: 520px;">
+      <input type="text" nz-input placeholder="请输入商品名称" [(ngModel)]="title" />
+      <ng-template #addOnAfterBtn>
+        <button nz-button nzType="primary" nzSize="large" nzSearch (click)="search()">
+          <i nz-icon nzType="search" nzTheme="outline"></i>查找
+        </button>
+      </ng-template>
+    </nz-input-group>
+  </div>
+  <ng-template #tab>
+    <nz-tabset [nzSelectedIndex]="pos" [nzTabBarGutter]='5'>
+      <nz-tab *ngFor="let i of tabs" [nzTitle]="i.tab" (nzClick)="to(i)"></nz-tab>
+    </nz-tabset>
+  </ng-template>
+</page-header>
+<app-product-list #juggle [categoryId]="categoryId"></app-product-list>

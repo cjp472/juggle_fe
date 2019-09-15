@@ -1,0 +1,35 @@
+<page-header [title]="'社区发布'">
+  发布社区动态到对应社区，作者为当前登录用户。
+</page-header>
+<nz-card [nzBordered]="false">
+  <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+    <se label="社区" error="请选择社区" required>
+      <nz-select formControlName="communityId" nzAllowClear nzPlaceHolder="请选择一个社区">
+        <nz-option *ngFor="let i of communityOpts" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="图片">
+      <nz-upload [nzAction]="httpService.getUploadUrl()" (nzChange)='changeThumbnail($event)'>
+        <button nz-button type="button"><i nz-icon nzType="upload"></i><span>上传封面图</span></button>
+      </nz-upload>
+    </se>
+    <se label="商品">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixButton" style="width:100%;">
+        <input type="text" nz-input formControlName="popularName" disabled placeholder="商品名称" />
+        <input type="hidden" nz-input formControlName="popularId" />
+      </nz-input-group>
+      <ng-template #suffixButton>
+        <button nz-button nzType="primary" type="button" nzSearch (click)="openProduct()">选择</button>
+      </ng-template>
+    </se>
+    <se label="标题" error="请输入标题" required>
+      <input nz-input formControlName="title" placeholder="给标题起个名字" />
+    </se>
+    <se label="内容" error="请输入内容" required>
+      <textarea nz-input formControlName="content" [nzAutosize]="{ minRows: 4 }" placeholder="请输入你的社区发布内容"></textarea>
+    </se>
+    <se>
+      <button nz-button nzType="primary" [disabled]="form.invalid" type="submit" [nzLoading]="submitting">提交</button>
+    </se>
+  </form>
+</nz-card>

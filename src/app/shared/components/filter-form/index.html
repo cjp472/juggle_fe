@@ -1,0 +1,46 @@
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+    <div nz-col nzMd="8" nzSm="24" *ngFor="let filter of filters;let i=index">
+      <section *ngIf='i < 2 || expandForm'>
+        <nz-form-item *ngIf='filter.type=="input"'>
+          <nz-form-label>{{filter.title}}</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="请输入" [name]="filter.name" [(ngModel)]="filter.value" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf='filter.type=="dateRange"'>
+          <nz-form-label>{{filter.title}}</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker [name]="filter.name" [(ngModel)]="filter.value"></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf='filter.type=="select"'>
+          <nz-form-label nzFor="status">{{filter.title}}</nz-form-label>
+          <nz-form-control>
+            <nz-select [nzPlaceHolder]="'请选择'" [nzShowSearch]="true" [name]="filter.name" [(ngModel)]="filter.value">
+              <nz-option *ngFor="let i of filter.extra; let idx = index" [nzLabel]="i.label" [nzValue]="i.value">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf='filter.type=="cascader"'>
+          <nz-form-label nzFor="status">{{filter.title}}</nz-form-label>
+          <nz-form-control>
+            <nz-cascader [name]="filter.name" [nzPlaceHolder]="'请选择'" [nzOptions]="filter.extra"
+              [nzLabelProperty]="'name'" [nzValueProperty]="'id'" [(ngModel)]="filter.value"
+              (ngModelChange)="onChanges($event)" [nzChangeOnSelect]="true">
+            </nz-cascader>
+          </nz-form-control>
+        </nz-form-item>
+      </section>
+    </div>
+    <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+      <button nz-button type="submit" [nzType]="'primary'" (click)="emitSearch()" [nzLoading]="loading">查询</button>
+      <button nz-button type="reset" class="mx-sm">重置</button>
+      <a *ngIf='filters.length>2' (click)="expandForm = !expandForm">
+        {{ expandForm ? '收起' : '展开' }}
+        <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+      </a>
+    </div>
+  </div>
+</form>

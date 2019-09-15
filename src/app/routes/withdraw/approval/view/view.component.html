@@ -1,0 +1,46 @@
+<page-header [title]="'提现审批'" [content]="content" [action]="action">
+  <ng-template #action>
+    <div class="action">
+      <nz-button-group *ngIf="data.processStatus=='OPEN'" style="margin-right:25px;">
+        <button nz-button nzType="primary" (click)="pass()"><i nz-icon nzType="check"></i>通过</button>
+        <button nz-button nzType="dashed" (click)="reject()"><i nz-icon nzType="close"></i>拒绝</button>
+      </nz-button-group>
+      <button nz-button nzType="default" nzShape="circle" (click)="goBack()"><i nz-icon nzType="close"></i></button>
+    </div>
+  </ng-template>
+  <ng-template #content>
+    <div class="desc">会员提现申请信息，最近提现历史等详细信息</div>
+  </ng-template>
+</page-header>
+<nz-card [nzHoverable]="true" [nzBordered]="false">
+  <sv-container size="large" title="提现申请">
+    <sv label="流水号">{{data.extra.code}}</sv>
+    <sv label="提现金额">¥ {{data.extra.amount|number:'1.2-2'}}</sv>
+    <sv label="提现方式">
+      <nz-tag *ngIf="data.extra && data.extra.accountType=='ALIPAY'" [nzColor]="'blue'">支付宝</nz-tag>
+      <nz-tag *ngIf="data.extra && data.extra.accountType=='BANK'" [nzColor]="'green'">银行卡</nz-tag>
+    </sv>
+    <sv label="申请时间">{{data.createdTime|_date}}</sv>
+    <sv label="审批时间" *ngIf="data.processStatus!='OPEN'">{{data.approvalTime|_date}}</sv>
+    <sv label="审批人" *ngIf="data.processStatus!='OPEN'">{{data.approver.realName}}</sv>
+    <sv label="审批状态">
+      <nz-badge *ngIf="data.processStatus=='OPEN'" nzStatus="processing" nzText="待审批"></nz-badge>
+      <nz-badge *ngIf="data.processStatus=='PASS'" nzStatus="success" nzText="已通过"></nz-badge>
+      <nz-badge *ngIf="data.processStatus=='REJECT'" nzStatus="error" nzText="已拒绝"></nz-badge>
+    </sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+  <sv-container size=" large" title="会员信息">
+    <sv label="会员编码">{{data.member.code}}</sv>
+    <sv label="用户昵称">{{data.member.nickName}}</sv>
+    <sv label="联系电话">{{data.member.mobile}}</sv>
+    <sv label="会员等级">
+      <nz-tag *ngIf="data.member.grade=='GRADE1'" [nzColor]="'blue'">普通会员</nz-tag>
+      <nz-tag *ngIf="data.member.grade=='GRADE2'" [nzColor]="'orange'">黄金会员</nz-tag>
+    </sv>
+    <sv label="注册时间">{{data.member.createdTime | _date }}</sv>
+  </sv-container>
+  <nz-divider></nz-divider>
+  <div class="text-lg my-md">最近提现</div>
+  <st [data]="history" [columns]="historyColumns" [page]="{ show: false }"></st>
+</nz-card>

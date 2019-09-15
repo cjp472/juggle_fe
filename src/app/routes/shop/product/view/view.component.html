@@ -1,0 +1,62 @@
+<page-header [title]="'商品详情'" [content]="content" [action]="action">
+  <ng-template #action>
+    <div class="action">
+      <button nz-button nzType="default" nzShape="circle" (click)="goBack()"><i nz-icon nzType="close"></i></button>
+    </div>
+  </ng-template>
+  <ng-template #content>
+    <div class="desc">商品信息，商品属性等详细信息</div>
+  </ng-template>
+</page-header>
+<nz-card [nzHoverable]="true" [nzBordered]="false">
+  <sv-container size="large" title="商品信息">
+    <sv label="商品名称">{{data.name}}</sv>
+    <sv label="商品分类">{{data.type?data.type.name:''}}</sv>
+    <sv label="原本价格">¥&nbsp;{{data.price|number:'1.2-2'}}</sv>
+    <sv label="优惠价格">¥&nbsp;{{data.actualPrice|number:'1.2-2'}}</sv>
+    <sv label="商品销量">{{data.volume}}</sv>
+    <sv label="是否推荐">
+      <nz-tag *ngIf="data.recommend" [nzColor]="'green'">是</nz-tag>
+      <nz-tag *ngIf="!data.recommend" [nzColor]="'red'">否</nz-tag>
+    </sv>
+    <sv label="商品标签">{{data.tagsText}}</sv>
+    <sv label="商品状态">
+      <nz-badge *ngIf="data.enabled" nzStatus="processing" nzText="上架"></nz-badge>
+      <nz-badge *ngIf="!data.enabled" nzStatus="error" nzText="下架"></nz-badge>
+    </sv>
+    <sv label="商品简介">{{data.brief}}</sv>
+  </sv-container>
+  <h4 class="mb-md">其他信息</h4>
+  <nz-card nzType="inner" nzTitle="图片信息">
+    <sv-container size="small" title="缩略图">
+      <sv>
+        <nz-avatar [nzShape]="'square'" [nzSize]="80" [nzSrc]="data.thumbnail" (click)="open(0)"></nz-avatar>
+      </sv>
+    </sv-container>
+    <nz-divider></nz-divider>
+    <sv-container size="small" title="轮播图" col="1">
+      <sv>
+        <nz-avatar *ngFor="let slide of data.slides;let i=index" [nzShape]="'square'" [nzSize]="80" [nzSrc]="slide"
+          (click)="open(i+1)" style="margin-right: 25px;"></nz-avatar>
+      </sv>
+    </sv-container>
+    <nz-divider></nz-divider>
+    <sv-container size="small" title="详情图">
+      <sv>
+        <nz-avatar *ngFor="let detail of data.details;let i=index" [nzShape]="'square'" [nzSize]="80" [nzSrc]="detail"
+          (click)="open(i+1+data.slides.length)" style="margin-right: 25px;"></nz-avatar>
+      </sv>
+    </sv-container>
+  </nz-card>
+  <nz-divider></nz-divider>
+  <div class="text-lg mb-md">商品规格<button nz-button nzType="dashed" style="margin-left:15px;"
+      (click)="openEdit()">添加SKU</button></div>
+  <st [data]="skus" [columns]="skusColumns" [page]="{ show: false }"></st>
+  <div class="text-lg mb-md" style="margin-top:25px;">商品评论</div>
+  <st #st [data]="comments" [widthMode]="{ type: 'strict' }" [columns]="commentsColumns" [page]="{ front: false }" [ps]='5' [total]='commentTotal'
+    (change)="stChange($event)">
+    <ng-template st-row="cStar" let-item let-index="index">
+      <nz-rate [ngModel]="item.cStar" [nzDisabled]="true"></nz-rate>
+    </ng-template>
+  </st>
+</nz-card>
