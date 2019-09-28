@@ -29,8 +29,8 @@ export interface App {
 @Injectable()
 export class SettingService {
   app: App = {
-    name: 'Juggle Management System',
-    description: 'Juggle Management System',
+    name: '惠小蜜管理平台',
+    description: '惠小蜜管理平台',
     year: new Date().getFullYear(),
     version: 'v0.0.1',
   };

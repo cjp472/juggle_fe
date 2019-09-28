@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Juggle Management System",
+    "name": "惠小蜜管理平台",
     "description": "Ng-zorro admin panel front-end framework"
   },
   "user": {
-    "name": "Juggle",
+    "name": "惠小蜜",
     "avatar": "./assets/tmp/img/avatar.jpg",
     "email": "1124485179@qq.com"
   },
